@@ -130,6 +130,29 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   onPressed: () => context.go('/login'),
                   child: const Text('Already have an account? Login'),
                 ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(child: Divider(color: Colors.grey.shade300)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text('OR', style: TextStyle(color: Colors.grey.shade600)),
+                    ),
+                    Expanded(child: Divider(color: Colors.grey.shade300)),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                OutlinedButton.icon(
+                  onPressed: authState.isLoading ? null : () {
+                    ref.read(authControllerProvider.notifier).loginWithGoogle();
+                  },
+                  icon: const Icon(Icons.g_mobiledata, size: 32),
+                  label: const Text('Continue with Google'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    foregroundColor: Colors.black87,
+                  ),
+                ),
               ],
             ),
           ),

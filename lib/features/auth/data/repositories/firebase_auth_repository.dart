@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../models/user_model.dart';
@@ -110,6 +111,40 @@ class FirebaseAuthRepository implements AuthRepository {
       }
     } catch (e) {
       throw Exception('Sign-in error: $e');
+    }
+  }
+
+  @override
+  Future<UserEntity> signInWithGoogle() async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) throw Exception('Google sign in aborted.');
+
+      final googleAuth = await googleUser.authentication;
+      final credential = firebase.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final user = userCredential.user;
+      if (user == null) throw Exception('Google sign in failed.');
+
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return UserModel.fromFirestore(doc);
+      } else {
+        final userModel = UserModel(
+          id: user.uid,
+          name: googleUser.displayName ?? user.displayName ?? '',
+          email: googleUser.email,
+          createdAt: DateTime.now(),
+        );
+        await _firestore.collection('users').doc(user.uid).set(userModel.toMap());
+        return userModel;
+      }
+    } catch (e) {
+      throw Exception('Google sign-in error: $e');
     }
   }
 
