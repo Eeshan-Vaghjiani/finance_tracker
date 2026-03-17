@@ -7,8 +7,11 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primary,
+        seedColor: Colors.blue, // Explicit pure blue seed
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
         surface: AppColors.surface,
+        background: AppColors.background,
       ),
       textTheme: GoogleFonts.interTextTheme(),
       appBarTheme: const AppBarTheme(
@@ -22,6 +25,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
