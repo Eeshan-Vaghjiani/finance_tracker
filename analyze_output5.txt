@@ -1,0 +1,55 @@
+Resolving dependencies...
+Downloading packages...
+  _fe_analyzer_shared 93.0.0 (98.0.0 available)
+  analyzer 10.0.1 (12.0.0 available)
+  meta 1.17.0 (1.18.2 available)
+  native_toolchain_c 0.17.5 (0.17.6 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing finance_tracker...                                    
+
+   info - Don't invoke 'print' in production code - lib\core\services\notification_service.dart:19:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\core\services\notification_service.dart:24:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\core\services\notification_service.dart:25:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\core\services\notification_service.dart:28:9 - avoid_print
+  error - Classes can only extend other classes - lib\features\auth\presentation\providers\auth_provider.dart:14:30 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\features\auth\presentation\providers\auth_provider.dart:17:48 - extra_positional_arguments
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:20:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:26:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:28:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:33:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:40:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:42:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:47:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:50:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:52:7 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\features\auth\presentation\providers\auth_provider.dart:57:32 - undefined_function
+  error - Target of URI doesn't exist: '../../core/constants/app_colors.dart' - lib\features\auth\presentation\screens\splash_screen.dart:2:8 - uri_does_not_exist
+  error - Invalid constant value - lib\features\auth\presentation\screens\splash_screen.dart:10:24 - invalid_constant
+  error - Undefined name 'AppColors' - lib\features\auth\presentation\screens\splash_screen.dart:10:24 - undefined_identifier
+  error - Classes can only extend other classes - lib\features\sms_parsing\presentation\providers\sms_provider.dart:11:33 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\features\sms_parsing\presentation\providers\sms_provider.dart:14:40 - extra_positional_arguments
+  error - Undefined name 'state' - lib\features\sms_parsing\presentation\providers\sms_provider.dart:17:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\sms_parsing\presentation\providers\sms_provider.dart:21:9 - undefined_identifier
+  error - Undefined name 'state' - lib\features\sms_parsing\presentation\providers\sms_provider.dart:45:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\sms_parsing\presentation\providers\sms_provider.dart:47:7 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\features\sms_parsing\presentation\providers\sms_provider.dart:52:27 - undefined_function
+  error - Classes can only extend other classes - lib\features\transactions\presentation\providers\transaction_provider.dart:22:37 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\features\transactions\presentation\providers\transaction_provider.dart:25:51 - extra_positional_arguments
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:28:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:31:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:33:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:38:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:41:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:43:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:48:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:51:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:53:7 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\features\transactions\presentation\providers\transaction_provider.dart:58:39 - undefined_function
+  error - Target of URI doesn't exist: '../../sms_parsing/presentation/providers/sms_provider.dart' - lib\features\transactions\presentation\screens\profile_screen.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'syncMpesaProvider' - lib\features\transactions\presentation\screens\profile_screen.dart:41:45 - undefined_identifier
+  error - Undefined name 'syncMpesaProvider' - lib\features\transactions\presentation\screens\profile_screen.dart:44:19 - undefined_identifier
+  error - Undefined name 'syncMpesaProvider' - lib\features\transactions\presentation\screens\profile_screen.dart:64:40 - undefined_identifier
+warning - Duplicate import - lib\main.dart:3:8 - duplicate_import
+

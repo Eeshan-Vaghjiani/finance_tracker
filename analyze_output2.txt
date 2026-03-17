@@ -1,0 +1,71 @@
+Analyzing finance_tracker...                                    
+
+   info - Don't invoke 'print' in production code - lib\core\services\notification_service.dart:19:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\core\services\notification_service.dart:24:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\core\services\notification_service.dart:25:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\core\services\notification_service.dart:28:9 - avoid_print
+  error - Target of URI doesn't exist: '../../../transactions/domain/entities/transaction_entity.dart' - lib\core\utils\mpesa_parser.dart:1:8 - uri_does_not_exist
+  error - Undefined class 'TransactionEntity' - lib\core\utils\mpesa_parser.dart:14:10 - undefined_class
+  error - The method 'TransactionEntity' isn't defined for the type 'MPesaParser' - lib\core\utils\mpesa_parser.dart:21:14 - undefined_method
+  error - Undefined name 'TransactionType' - lib\core\utils\mpesa_parser.dart:25:15 - undefined_identifier
+  error - The method 'TransactionEntity' isn't defined for the type 'MPesaParser' - lib\core\utils\mpesa_parser.dart:39:14 - undefined_method
+  error - Undefined name 'TransactionType' - lib\core\utils\mpesa_parser.dart:43:15 - undefined_identifier
+  error - Target of URI doesn't exist: 'entities/user_entity.dart' - lib\features\auth\domain\repositories\auth_repository.dart:1:8 - uri_does_not_exist
+  error - The name 'UserEntity' isn't a type, so it can't be used as a type argument - lib\features\auth\domain\repositories\auth_repository.dart:4:10 - non_type_as_type_argument
+  error - The name 'UserEntity' isn't a type, so it can't be used as a type argument - lib\features\auth\domain\repositories\auth_repository.dart:6:10 - non_type_as_type_argument
+  error - The name 'UserEntity' isn't a type, so it can't be used as a type argument - lib\features\auth\domain\repositories\auth_repository.dart:11:10 - non_type_as_type_argument
+  error - Undefined class 'UserEntity' - lib\features\auth\domain\repositories\auth_repository.dart:19:3 - undefined_class
+  error - Classes can only extend other classes - lib\features\auth\presentation\providers\auth_provider.dart:14:30 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\features\auth\presentation\providers\auth_provider.dart:17:48 - extra_positional_arguments
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:20:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:26:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:28:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:33:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:40:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:42:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:47:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:50:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\auth\presentation\providers\auth_provider.dart:52:7 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\features\auth\presentation\providers\auth_provider.dart:57:32 - undefined_function
+  error - Target of URI doesn't exist: '../../core/constants/app_colors.dart' - lib\features\auth\presentation\screens\splash_screen.dart:2:8 - uri_does_not_exist
+  error - Invalid constant value - lib\features\auth\presentation\screens\splash_screen.dart:10:24 - invalid_constant
+  error - Undefined name 'AppColors' - lib\features\auth\presentation\screens\splash_screen.dart:10:24 - undefined_identifier
+  error - Classes can only extend other classes - lib\features\sms_parsing\presentation\providers\sms_provider.dart:11:33 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\features\sms_parsing\presentation\providers\sms_provider.dart:14:40 - extra_positional_arguments
+  error - Undefined name 'state' - lib\features\sms_parsing\presentation\providers\sms_provider.dart:17:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\sms_parsing\presentation\providers\sms_provider.dart:21:9 - undefined_identifier
+  error - Undefined name 'state' - lib\features\sms_parsing\presentation\providers\sms_provider.dart:45:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\sms_parsing\presentation\providers\sms_provider.dart:47:7 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\features\sms_parsing\presentation\providers\sms_provider.dart:52:27 - undefined_function
+  error - Target of URI doesn't exist: 'transaction_entity.dart' - lib\features\transactions\domain\repositories\transaction_repository.dart:1:8 - uri_does_not_exist
+  error - The name 'TransactionEntity' isn't a type, so it can't be used as a type argument - lib\features\transactions\domain\repositories\transaction_repository.dart:4:15 - non_type_as_type_argument
+  error - Undefined class 'TransactionEntity' - lib\features\transactions\domain\repositories\transaction_repository.dart:6:31 - undefined_class
+  error - Undefined class 'TransactionEntity' - lib\features\transactions\domain\repositories\transaction_repository.dart:8:34 - undefined_class
+  error - Classes can only extend other classes - lib\features\transactions\presentation\providers\transaction_provider.dart:22:37 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\features\transactions\presentation\providers\transaction_provider.dart:25:51 - extra_positional_arguments
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:28:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:31:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:33:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:38:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:41:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:43:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:48:5 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:51:7 - undefined_identifier
+  error - Undefined name 'state' - lib\features\transactions\presentation\providers\transaction_provider.dart:53:7 - undefined_identifier
+  error - The function 'StateNotifierProvider' isn't defined - lib\features\transactions\presentation\providers\transaction_provider.dart:59:5 - undefined_function
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\features\transactions\presentation\screens\add_transaction_screen.dart:169:19 - deprecated_member_use
+  error - Undefined name 'TransactionType' - lib\features\transactions\presentation\screens\home_screen.dart:91:53 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\transactions\presentation\screens\home_screen.dart:96:76 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\transactions\presentation\screens\home_screen.dart:96:113 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\transactions\presentation\screens\home_screen.dart:144:38 - deprecated_member_use
+  error - Target of URI doesn't exist: '../../sms_parsing/presentation/providers/sms_provider.dart' - lib\features\transactions\presentation\screens\profile_screen.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'syncMpesaProvider' - lib\features\transactions\presentation\screens\profile_screen.dart:41:45 - undefined_identifier
+  error - Undefined name 'syncMpesaProvider' - lib\features\transactions\presentation\screens\profile_screen.dart:44:19 - undefined_identifier
+  error - Undefined name 'syncMpesaProvider' - lib\features\transactions\presentation\screens\profile_screen.dart:64:40 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\transactions\presentation\screens\profile_screen.dart:82:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\transactions\presentation\screens\transaction_list_screen.dart:48:68 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\features\transactions\presentation\screens\transaction_list_screen.dart:48:105 - deprecated_member_use
+warning - Unused import: 'package:firebase_core/firebase_core.dart' - lib\main.dart:3:8 - unused_import
+warning - Unused import: 'dart:ui' - lib\shared\models\category_expense_model.dart:1:8 - unused_import
+  error - The name 'MyApp' isn't a class - test\widget_test.dart:16:35 - creation_with_non_type
+
