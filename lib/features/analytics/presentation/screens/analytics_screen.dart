@@ -82,12 +82,15 @@ class AnalyticsScreen extends ConsumerWidget {
     return List.generate(expenses.length, (i) {
       final item = expenses[i];
       final percentage = (item.amount / total) * 100;
+      
+      final isSmall = percentage < 5;
 
       return PieChartSectionData(
         color: _getColorForIndex(i),
         value: item.amount,
-        title: '${percentage.toStringAsFixed(0)}%',
-        radius: 60,
+        title: isSmall ? '' : '${percentage.toStringAsFixed(0)}%',
+        radius: isSmall ? 50 : 60,
+        showTitle: !isSmall,
         titleStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
