@@ -156,20 +156,24 @@ class HomeScreen extends ConsumerWidget {
             style: TextStyle(color: Colors.white70, fontSize: 16),
           ),
           const SizedBox(height: 8),
-          Text(
-            format.format(balance),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              format.format(balance),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(height: 24),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildIncomeExpenseColumn('Income', format.format(income), Icons.arrow_upward, Colors.greenAccent),
-              _buildIncomeExpenseColumn('Expense', format.format(expense), Icons.arrow_downward, Colors.redAccent),
+              Expanded(child: _buildIncomeExpenseColumn('Income', format.format(income), Icons.arrow_upward, Colors.greenAccent)),
+              const SizedBox(width: 16),
+              Expanded(child: _buildIncomeExpenseColumn('Expense', format.format(expense), Icons.arrow_downward, Colors.redAccent)),
             ],
           ),
         ],
@@ -186,15 +190,21 @@ class HomeScreen extends ConsumerWidget {
           child: Icon(icon, color: iconColor, size: 16),
         ),
         const SizedBox(width: 8),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(color: Colors.white70, fontSize: 12)),
-            Text(
-              amount,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  amount,
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
