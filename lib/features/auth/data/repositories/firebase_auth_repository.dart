@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart' as google_sign_in;
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../models/user_model.dart';
@@ -117,7 +117,8 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<UserEntity> signInWithGoogle() async {
     try {
-      final googleUser = await GoogleSignIn().signIn();
+      final googleSignInInstance = google_sign_in.GoogleSignIn();
+      final googleUser = await googleSignInInstance.signIn();
       if (googleUser == null) throw Exception('Google sign in aborted.');
 
       final googleAuth = await googleUser.authentication;

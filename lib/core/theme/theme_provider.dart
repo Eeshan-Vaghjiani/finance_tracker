@@ -7,38 +7,41 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();
 });
 
-// A StateProvider to manage the current ThemeMode
-final themeModeProvider = StateProvider<ThemeMode>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  final themeString = prefs.getString('theme_mode') ?? 'system';
-  
-  switch (themeString) {
-    case 'light':
-      return ThemeMode.light;
-    case 'dark':
-      return ThemeMode.dark;
-    case 'system':
-    default:
-      return ThemeMode.system;
+class ThemeModeNotifier extends Notifier<ThemeMode> {
+  @override
+  ThemeMode build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    final themeString = prefs.getString('theme_mode') ?? 'system';
+    
+    switch (themeString) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+      default:
+        return ThemeMode.system;
+    }
   }
+
+  Future<void> setTheme(ThemeMode mode) async {
+    final prefs = ref.read(sharedPreferencesProvider);
+    String themeString = 'system';
+    if (mode == ThemeMode.light) themeString = 'light';
+    else if (mode == ThemeMode.dark) themeString = 'dark';
+    
+    await prefs.setString('theme_mode', themeString);
+    state = mode;
+  }
+}
+
+// A NotifierProvider to manage the current ThemeMode
+final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(() {
+  return ThemeModeNotifier();
 });
 
 class ThemeNotifier {
   static Future<void> setTheme(WidgetRef ref, ThemeMode mode) async {
-    final prefs = ref.read(sharedPreferencesProvider);
-    String themeString;
-    switch (mode) {
-      case ThemeMode.light:
-        themeString = 'light';
-        break;
-      case ThemeMode.dark:
-        themeString = 'dark';
-        break;
-      case ThemeMode.system:
-        themeString = 'system';
-        break;
-    }
-    await prefs.setString('theme_mode', themeString);
-    ref.read(themeModeProvider.notifier).state = mode;
+    await ref.read(themeModeProvider.notifier).setTheme(mode);
   }
 }

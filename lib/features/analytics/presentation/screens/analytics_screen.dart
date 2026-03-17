@@ -118,7 +118,6 @@ class AnalyticsScreen extends ConsumerWidget {
                 enabled: true,
                 touchTooltipData: BarTouchTooltipData(
                   getTooltipColor: (_) => Theme.of(context).colorScheme.surface,
-                  tooltipRoundedRadius: 8,
                   getTooltipItem: (group, groupIndex, rod, rodIndex) {
                     final isIncome = rodIndex == 0;
                     final format = NumberFormat.compactCurrency(symbol: '\$');
