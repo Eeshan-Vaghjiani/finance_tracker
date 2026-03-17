@@ -90,29 +90,42 @@ class HomeScreen extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final tx = recentList[index];
                         final isIncome = tx.type == TransactionType.income;
-                        return Card(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: isIncome ? AppColors.income.withValues(alpha: 0.2) : AppColors.expense.withValues(alpha: 0.2),
-                              child: Icon(
-                                isIncome ? Icons.arrow_upward : Icons.arrow_downward,
-                                color: isIncome ? AppColors.income : AppColors.expense,
+                        return Dismissible(
+                          key: Key(tx.id),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 20),
+                            color: Colors.red,
+                            child: const Icon(Icons.delete, color: Colors.white),
+                          ),
+                          onDismissed: (_) {
+                            ref.read(transactionControllerProvider.notifier).deleteTransaction(tx.id);
+                          },
+                          child: Card(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: isIncome ? AppColors.income.withValues(alpha: 0.2) : AppColors.expense.withValues(alpha: 0.2),
+                                child: Icon(
+                                  isIncome ? Icons.arrow_upward : Icons.arrow_downward,
+                                  color: isIncome ? AppColors.income : AppColors.expense,
+                                ),
                               ),
-                            ),
-                            title: Text(tx.category, style: const TextStyle(fontWeight: FontWeight.bold)),
-                            subtitle: Text(DateFormat.yMMMd().format(tx.date)),
-                            trailing: Text(
-                              '${isIncome ? '+' : '-'}${currencyFormat.format(tx.amount)}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: isIncome ? AppColors.income : AppColors.expense,
-                                fontSize: 16,
+                              title: Text(tx.category, style: const TextStyle(fontWeight: FontWeight.bold)),
+                              subtitle: Text(DateFormat.yMMMd().format(tx.date)),
+                              trailing: Text(
+                                '${isIncome ? '+' : '-'}${currencyFormat.format(tx.amount)}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: isIncome ? AppColors.income : AppColors.expense,
+                                  fontSize: 16,
+                                ),
                               ),
+                              onTap: () {
+                                // TODO: Navigate to details or edit
+                              },
                             ),
-                            onTap: () {
-                              // TODO: Navigate to details or edit
-                            },
                           ),
                         );
                       },

@@ -19,31 +19,47 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
+  final _customCategoryController = TextEditingController();
   
   TransactionType _selectedType = TransactionType.expense;
   DateTime _selectedDate = DateTime.now();
   String _selectedCategory = 'Food';
 
-  final List<String> _expenseCategories = ['Food', 'Transport', 'Utilities', 'Shopping', 'Entertainment', 'Other'];
-  final List<String> _incomeCategories = ['Salary', 'Freelance', 'Investments', 'Gift', 'Other'];
+  @override
+  void initState() {
+    super.initState();
+    // Default categories will be overwritten by provider on first build, but keep sensible defaults
+  }
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
+      if (_selectedCategory == 'Other' && _customCategoryController.text.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter a custom category name.')),
+        );
+        return;
+      }
+
       final user = ref.read(authStateProvider).value;
       if (user == null) return;
+
+      final finalCategory = _selectedCategory == 'Other' 
+          ? _customCategoryController.text.trim() 
+          : _selectedCategory;
 
       final transaction = TransactionEntity(
         id: const Uuid().v4(), // Temporary ID, Firestore will override
         userId: user.id,
         amount: double.parse(_amountController.text),
         type: _selectedType,
-        category: _selectedCategory,
+        category: finalCategory,
         note: _noteController.text.trim(),
         date: _selectedDate,
         createdAt: DateTime.now(),
       );
 
       ref.read(transactionControllerProvider.notifier).addTransaction(transaction).then((_) {
+        // ignore: use_build_context_synchronously
         if (mounted) context.pop();
       });
     }
@@ -53,12 +69,26 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   void dispose() {
     _amountController.dispose();
     _noteController.dispose();
+    _customCategoryController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final txState = ref.watch(transactionControllerProvider);
+    final incomeCategories = ref.watch(incomeCategoriesProvider);
+    final expenseCategories = ref.watch(expenseCategoriesProvider);
+
+    final currentCategories = _selectedType == TransactionType.income ? incomeCategories : expenseCategories;
+    
+    // Safety check: Ensure the selected category exists in the list currently being shown
+    if (!currentCategories.contains(_selectedCategory)) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+               _selectedCategory = currentCategories.first;
+            });
+        });
+    }
 
     ref.listen<AsyncValue<void>>(
       transactionControllerProvider,
@@ -97,7 +127,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                           onTap: () {
                             setState(() {
                               _selectedType = TransactionType.income;
-                              _selectedCategory = _incomeCategories.first;
+                              _selectedCategory = incomeCategories.first;
                             });
                           },
                           child: Container(
@@ -122,7 +152,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                           onTap: () {
                             setState(() {
                               _selectedType = TransactionType.expense;
-                              _selectedCategory = _expenseCategories.first;
+                              _selectedCategory = expenseCategories.first;
                             });
                           },
                           child: Container(
@@ -166,17 +196,33 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                 
                 // Category
                 DropdownButtonFormField<String>(
-                  initialValue: _selectedCategory,
+                  value: currentCategories.contains(_selectedCategory) ? _selectedCategory : currentCategories.first,
                   decoration: const InputDecoration(labelText: 'Category'),
-                  items: (_selectedType == TransactionType.income ? _incomeCategories : _expenseCategories)
+                  items: currentCategories
                       .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                       .toList(),
                   onChanged: (val) {
                     if (val != null) {
-                      setState(() => _selectedCategory = val);
+                      setState(() {
+                        _selectedCategory = val;
+                        if (val != 'Other') {
+                           _customCategoryController.clear();
+                        }
+                      });
                     }
                   },
                 ),
+                if (_selectedCategory == 'Other') ...[
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _customCategoryController,
+                    decoration: const InputDecoration(
+                      labelText: 'Custom Category Name',
+                      hintText: 'e.g., Gym Membership',
+                    ),
+                    textCapitalization: TextCapitalization.words,
+                  ),
+                ],
                 const SizedBox(height: 24),
 
                 // Date Picker

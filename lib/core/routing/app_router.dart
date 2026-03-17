@@ -9,6 +9,7 @@ import '../../features/transactions/presentation/screens/home_screen.dart';
 import '../../features/transactions/presentation/screens/profile_screen.dart';
 import '../../features/transactions/presentation/screens/add_transaction_screen.dart';
 import '../../features/transactions/presentation/screens/transaction_list_screen.dart';
+import '../../features/transactions/presentation/screens/settings_screen.dart';
 import '../../features/analytics/presentation/screens/analytics_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -103,6 +104,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/transactions',
         builder: (context, state) => const TransactionListScreen(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
   );

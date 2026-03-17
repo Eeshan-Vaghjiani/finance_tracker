@@ -83,3 +83,27 @@ final totalExpenseProvider = Provider<double>((ref) {
       .where((tx) => tx.type == TransactionType.expense)
       .fold(0.0, (sum, tx) => sum + tx.amount);
 });
+
+final incomeCategoriesProvider = Provider<List<String>>((ref) {
+  final defaultCategories = ['Salary', 'Freelance', 'Investments', 'Gift'];
+  final transactions = ref.watch(userTransactionsProvider).value ?? [];
+  final customCategories = transactions
+      .where((tx) => tx.type == TransactionType.income)
+      .map((tx) => tx.category)
+      .where((category) => !defaultCategories.contains(category) && category != 'Other')
+      .toSet()
+      .toList();
+  return [...defaultCategories, ...customCategories, 'Other'];
+});
+
+final expenseCategoriesProvider = Provider<List<String>>((ref) {
+  final defaultCategories = ['Food', 'Transport', 'Utilities', 'Shopping', 'Entertainment'];
+  final transactions = ref.watch(userTransactionsProvider).value ?? [];
+  final customCategories = transactions
+      .where((tx) => tx.type == TransactionType.expense)
+      .map((tx) => tx.category)
+      .where((category) => !defaultCategories.contains(category) && category != 'Other')
+      .toSet()
+      .toList();
+  return [...defaultCategories, ...customCategories, 'Other'];
+});

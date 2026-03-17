@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import 'package:finance_tracker/features/sms_parsing/presentation/providers/sms_provider.dart';
 
@@ -37,6 +38,21 @@ class ProfileScreen extends ConsumerWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 48),
+              
+              ElevatedButton.icon(
+                onPressed: () {
+                  context.push('/settings');
+                },
+                icon: const Icon(Icons.settings),
+                label: const Text('Settings'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+              const SizedBox(height: 16),
+              
               Consumer(builder: (context, ref, child) {
                 final syncState = ref.watch(syncMpesaProvider);
 
