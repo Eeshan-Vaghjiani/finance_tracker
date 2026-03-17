@@ -98,15 +98,15 @@ class AnalyticsScreen extends ConsumerWidget {
   }
 
   Color _getColorForIndex(int index) {
-    const colors = [
-      Color(0xFF2563EB), // Blue
-      Color(0xFF059669), // Emerald
-      Color(0xFFD97706), // Amber
-      Color(0xFFDC2626), // Red
-      Color(0xFF0891B2), // Cyan
-      Color(0xFFEA580C), // Orange
-      Color(0xFF475569), // Slate
-      Color(0xFF65A30D), // Lime
+    final colors = <Color>[
+      const Color(0xFF2563EB), // Blue
+      const Color(0xFF059669), // Emerald
+      const Color(0xFFD97706), // Amber
+      const Color(0xFFDC2626), // Red
+      const Color(0xFF0891B2), // Cyan
+      const Color(0xFFEA580C), // Orange
+      const Color(0xFF475569), // Slate
+      const Color(0xFF65A30D), // Lime
     ];
     return colors[index % colors.length];
   }
