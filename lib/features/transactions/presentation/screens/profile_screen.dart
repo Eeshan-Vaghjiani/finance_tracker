@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import 'package:finance_tracker/features/sms_parsing/presentation/providers/sms_provider.dart';
 
@@ -21,9 +22,16 @@ class ProfileScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const CircleAvatar(
-                radius: 48,
-                child: Icon(Icons.person, size: 48),
+              Builder(
+                builder: (context) {
+                  final photoUrl = FirebaseAuth.instance.currentUser?.photoURL;
+                  return CircleAvatar(
+                    radius: 48,
+                    backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
+                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                    child: photoUrl == null ? const Icon(Icons.person, size: 48) : null,
+                  );
+                }
               ),
               const SizedBox(height: 24),
               Text(

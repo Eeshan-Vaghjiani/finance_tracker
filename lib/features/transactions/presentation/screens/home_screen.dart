@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/transaction_provider.dart';
@@ -37,7 +38,16 @@ class HomeScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle, size: 32),
+            icon: Builder(
+              builder: (context) {
+                final photoUrl = FirebaseAuth.instance.currentUser?.photoURL;
+                return CircleAvatar(
+                  radius: 16,
+                  backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
+                  child: photoUrl == null ? const Icon(Icons.account_circle, size: 32) : null,
+                );
+              }
+            ),
             onPressed: () => context.push('/profile'),
           ),
           const SizedBox(width: 8),
