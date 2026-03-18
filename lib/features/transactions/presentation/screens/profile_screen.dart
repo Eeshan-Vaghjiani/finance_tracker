@@ -20,48 +20,50 @@ class ProfileScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Builder(
-                builder: (context) {
-                  String? photoUrl =
-                      FirebaseAuth.instance.currentUser?.photoURL;
+              Center(
+                child: Builder(
+                  builder: (context) {
+                    String? photoUrl =
+                        FirebaseAuth.instance.currentUser?.photoURL;
 
-                  // Google profile pictures default to 96x96. We bump it to 400x400 for sharpness.
-                  if (photoUrl != null && photoUrl.contains('=s96-c')) {
-                    photoUrl = photoUrl.replaceAll('=s96-c', '=s400-c');
-                  }
+                    // Google profile pictures default to 96x96. We bump it to 400x400 for sharpness.
+                    if (photoUrl != null && photoUrl.contains('=s96-c')) {
+                      photoUrl = photoUrl.replaceAll('=s96-c', '=s400-c');
+                    }
 
-                  if (photoUrl != null) {
-                    return Container(
-                      width: 96,
-                      height: 96,
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child: ClipOval(
-                        child: Image.network(
-                          photoUrl,
-                          width: 96,
-                          height: 96,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              CircleAvatar(
-                                radius: 48,
-                                backgroundColor: Theme.of(
-                                  context,
-                                ).colorScheme.primaryContainer,
-                                child: const Icon(Icons.person, size: 48),
-                              ),
+                    if (photoUrl != null) {
+                      return Container(
+                        width: 96,
+                        height: 96,
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        child: ClipOval(
+                          child: Image.network(
+                            photoUrl,
+                            width: 96,
+                            height: 96,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                CircleAvatar(
+                                  radius: 48,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primaryContainer,
+                                  child: const Icon(Icons.person, size: 48),
+                                ),
+                          ),
                         ),
-                      ),
-                    );
-                  }
+                      );
+                    }
 
-                  return CircleAvatar(
-                    radius: 48,
-                    backgroundColor: Theme.of(
-                      context,
-                    ).colorScheme.primaryContainer,
-                    child: const Icon(Icons.person, size: 48),
-                  );
-                },
+                    return CircleAvatar(
+                      radius: 48,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.primaryContainer,
+                      child: const Icon(Icons.person, size: 48),
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: 24),
               Text(
