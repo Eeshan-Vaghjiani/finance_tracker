@@ -13,9 +13,7 @@ class ProfileScreen extends ConsumerWidget {
     final user = ref.watch(authStateProvider).value;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
+      appBar: AppBar(title: const Text('Profile')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -24,29 +22,65 @@ class ProfileScreen extends ConsumerWidget {
             children: [
               Builder(
                 builder: (context) {
-                  final photoUrl = FirebaseAuth.instance.currentUser?.photoURL;
+                  String? photoUrl =
+                      FirebaseAuth.instance.currentUser?.photoURL;
+
+                  // Google profile pictures default to 96x96. We bump it to 400x400 for sharpness.
+                  if (photoUrl != null && photoUrl.contains('=s96-c')) {
+                    photoUrl = photoUrl.replaceAll('=s96-c', '=s400-c');
+                  }
+
+                  if (photoUrl != null) {
+                    return Container(
+                      width: 96,
+                      height: 96,
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      child: ClipOval(
+                        child: Image.network(
+                          photoUrl,
+                          width: 96,
+                          height: 96,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              CircleAvatar(
+                                radius: 48,
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).colorScheme.primaryContainer,
+                                child: const Icon(Icons.person, size: 48),
+                              ),
+                        ),
+                      ),
+                    );
+                  }
+
                   return CircleAvatar(
                     radius: 48,
-                    backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                    child: photoUrl == null ? const Icon(Icons.person, size: 48) : null,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer,
+                    child: const Icon(Icons.person, size: 48),
                   );
-                }
+                },
               ),
               const SizedBox(height: 24),
               Text(
                 user?.name ?? 'Unknown User',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
               Text(
                 user?.email ?? 'No email',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: Colors.grey),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 48),
-              
+
               ElevatedButton.icon(
                 onPressed: () {
                   context.push('/settings');
@@ -55,22 +89,27 @@ class ProfileScreen extends ConsumerWidget {
                 label: const Text('Settings'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.primaryContainer,
+                  foregroundColor: Theme.of(
+                    context,
+                  ).colorScheme.onPrimaryContainer,
                 ),
               ),
               const SizedBox(height: 16),
-              
-              Consumer(builder: (context, ref, child) {
-                final syncState = ref.watch(syncMpesaProvider);
 
-                ref.listen<AsyncValue<int>>(
-                  syncMpesaProvider,
-                  (_, state) {
+              Consumer(
+                builder: (context, ref, child) {
+                  final syncState = ref.watch(syncMpesaProvider);
+
+                  ref.listen<AsyncValue<int>>(syncMpesaProvider, (_, state) {
                     state.whenOrNull(
                       data: (count) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Synced $count new transactions')),
+                          SnackBar(
+                            content: Text('Synced $count new transactions'),
+                          ),
                         );
                       },
                       error: (err, _) {
@@ -79,22 +118,28 @@ class ProfileScreen extends ConsumerWidget {
                         );
                       },
                     );
-                  },
-                );
+                  });
 
-                return ElevatedButton.icon(
-                  onPressed: syncState.isLoading
-                      ? null
-                      : () => ref.read(syncMpesaProvider.notifier).syncMessages(),
-                  icon: syncState.isLoading 
-                      ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
-                      : const Icon(Icons.sync),
-                  label: const Text('Sync M-Pesa SMS'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                );
-              }),
+                  return ElevatedButton.icon(
+                    onPressed: syncState.isLoading
+                        ? null
+                        : () => ref
+                              .read(syncMpesaProvider.notifier)
+                              .syncMessages(),
+                    icon: syncState.isLoading
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.sync),
+                    label: const Text('Sync M-Pesa SMS'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                  );
+                },
+              ),
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {

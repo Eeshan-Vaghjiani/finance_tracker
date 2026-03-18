@@ -12,12 +12,7 @@ class UserEntity {
   });
 
   factory UserEntity.empty() {
-    return UserEntity(
-      id: '',
-      name: '',
-      email: '',
-      createdAt: DateTime.now(),
-    );
+    return UserEntity(id: '', name: '', email: '', createdAt: DateTime.now());
   }
 
   bool get isEmpty => id.isEmpty;

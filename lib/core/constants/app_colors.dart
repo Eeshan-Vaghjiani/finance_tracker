@@ -6,7 +6,7 @@ class AppColors {
   static const Color balanceCard = Color(0xFF0F172A); // Slate 900
   static const Color background = Color(0xFFF8FAFC); // Slate 50
   static const Color surface = Colors.white;
-  
+
   static const Color income = Color(0xFF10B981); // Emerald Green
   static const Color expense = Color(0xFFEF4444); // Red
   static const Color textPrimary = Color(0xFF0F172A);

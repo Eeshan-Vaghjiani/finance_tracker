@@ -17,10 +17,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      ref.read(authControllerProvider.notifier).login(
-            _emailController.text.trim(),
-            _passwordController.text.trim(),
-          );
+      ref
+          .read(authControllerProvider.notifier)
+          .login(_emailController.text.trim(), _passwordController.text.trim());
     }
   }
 
@@ -35,18 +34,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
 
-    ref.listen<AsyncValue<void>>(
-      authControllerProvider,
-      (_, state) {
-        state.whenOrNull(
-          error: (error, _) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(error.toString().replaceAll('Exception: ', ''))),
-            );
-          },
-        );
-      },
-    );
+    ref.listen<AsyncValue<void>>(authControllerProvider, (_, state) {
+      state.whenOrNull(
+        error: (error, _) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error.toString().replaceAll('Exception: ', '')),
+            ),
+          );
+        },
+      );
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
@@ -62,8 +60,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Text(
                   'Welcome Back',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
@@ -75,7 +73,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value == null || value.isEmpty || !value.contains('@')) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !value.contains('@')) {
                       return 'Please enter a valid email';
                     }
                     return null;
@@ -118,16 +118,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Expanded(child: Divider(color: Colors.grey.shade300)),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text('OR', style: TextStyle(color: Colors.grey.shade600)),
+                      child: Text(
+                        'OR',
+                        style: TextStyle(color: Colors.grey.shade600),
+                      ),
                     ),
                     Expanded(child: Divider(color: Colors.grey.shade300)),
                   ],
                 ),
                 const SizedBox(height: 24),
                 OutlinedButton.icon(
-                  onPressed: authState.isLoading ? null : () {
-                    ref.read(authControllerProvider.notifier).loginWithGoogle();
-                  },
+                  onPressed: authState.isLoading
+                      ? null
+                      : () {
+                          ref
+                              .read(authControllerProvider.notifier)
+                              .loginWithGoogle();
+                        },
                   icon: const Icon(Icons.g_mobiledata, size: 32),
                   label: const Text('Continue with Google'),
                   style: OutlinedButton.styleFrom(

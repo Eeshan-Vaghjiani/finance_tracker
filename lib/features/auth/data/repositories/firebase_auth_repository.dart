@@ -12,8 +12,8 @@ class FirebaseAuthRepository implements AuthRepository {
   FirebaseAuthRepository({
     firebase.FirebaseAuth? firebaseAuth,
     FirebaseFirestore? firestore,
-  })  : _firebaseAuth = firebaseAuth ?? firebase.FirebaseAuth.instance,
-        _firestore = firestore ?? FirebaseFirestore.instance;
+  }) : _firebaseAuth = firebaseAuth ?? firebase.FirebaseAuth.instance,
+       _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   Stream<UserEntity?> get authStateChanges {
@@ -47,7 +47,7 @@ class FirebaseAuthRepository implements AuthRepository {
         email: email,
         password: password,
       );
-      
+
       final user = userCredential.user;
       if (user == null) throw Exception('Registration failed.');
 
@@ -94,7 +94,7 @@ class FirebaseAuthRepository implements AuthRepository {
       if (doc.exists) {
         return UserModel.fromFirestore(doc);
       } else {
-         return UserEntity(
+        return UserEntity(
           id: user.uid,
           name: user.displayName ?? '',
           email: user.email ?? '',
@@ -127,7 +127,9 @@ class FirebaseAuthRepository implements AuthRepository {
         idToken: googleAuth.idToken,
       );
 
-      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final userCredential = await _firebaseAuth.signInWithCredential(
+        credential,
+      );
       final user = userCredential.user;
       if (user == null) throw Exception('Google sign in failed.');
 
@@ -141,7 +143,10 @@ class FirebaseAuthRepository implements AuthRepository {
           email: googleUser.email,
           createdAt: DateTime.now(),
         );
-        await _firestore.collection('users').doc(user.uid).set(userModel.toMap());
+        await _firestore
+            .collection('users')
+            .doc(user.uid)
+            .set(userModel.toMap());
         return userModel;
       }
     } catch (e) {

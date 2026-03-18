@@ -19,7 +19,9 @@ class TransactionModel extends TransactionEntity {
       id: doc.id,
       userId: data['userId'] ?? '',
       amount: (data['amount'] ?? 0).toDouble(),
-      type: data['type'] == 'income' ? TransactionType.income : TransactionType.expense,
+      type: data['type'] == 'income'
+          ? TransactionType.income
+          : TransactionType.expense,
       category: data['category'] ?? '',
       note: data['note'] ?? '',
       date: (data['date'] as Timestamp?)?.toDate() ?? DateTime.now(),

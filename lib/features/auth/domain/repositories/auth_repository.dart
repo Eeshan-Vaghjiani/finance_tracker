@@ -2,7 +2,7 @@ import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
   Stream<UserEntity?> get authStateChanges;
-  
+
   Future<UserEntity> signInWithEmailAndPassword({
     required String email,
     required String password,
@@ -16,6 +16,6 @@ abstract class AuthRepository {
   Future<UserEntity> signInWithGoogle();
 
   Future<void> signOut();
-  
+
   UserEntity? get currentUser;
 }

@@ -12,7 +12,7 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
   ThemeMode build() {
     final prefs = ref.watch(sharedPreferencesProvider);
     final themeString = prefs.getString('theme_mode') ?? 'system';
-    
+
     switch (themeString) {
       case 'light':
         return ThemeMode.light;
@@ -27,9 +27,11 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
   Future<void> setTheme(ThemeMode mode) async {
     final prefs = ref.read(sharedPreferencesProvider);
     String themeString = 'system';
-    if (mode == ThemeMode.light) themeString = 'light';
-    else if (mode == ThemeMode.dark) themeString = 'dark';
-    
+    if (mode == ThemeMode.light) {
+      themeString = 'light';
+    } else if (mode == ThemeMode.dark)
+      themeString = 'dark';
+
     await prefs.setString('theme_mode', themeString);
     state = mode;
   }

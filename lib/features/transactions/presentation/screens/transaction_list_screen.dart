@@ -14,15 +14,13 @@ class TransactionListScreen extends ConsumerWidget {
     final currencyFormat = NumberFormat.currency(symbol: '\$');
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('All Transactions'),
-      ),
+      appBar: AppBar(title: const Text('All Transactions')),
       body: transactionsAsync.when(
         data: (transactions) {
           if (transactions.isEmpty) {
             return const Center(child: Text('No transactions found.'));
           }
-          
+
           return ListView.builder(
             padding: const EdgeInsets.all(16.0),
             itemCount: transactions.length,
@@ -39,20 +37,29 @@ class TransactionListScreen extends ConsumerWidget {
                   child: const Icon(Icons.delete, color: Colors.white),
                 ),
                 onDismissed: (_) {
-                  ref.read(transactionControllerProvider.notifier).deleteTransaction(tx.id);
+                  ref
+                      .read(transactionControllerProvider.notifier)
+                      .deleteTransaction(tx.id);
                 },
                 child: Card(
                   margin: const EdgeInsets.only(bottom: 8),
                   child: ListTile(
                     leading: CircleAvatar(
-                              backgroundColor: isIncome ? AppColors.income.withValues(alpha: 0.2) : AppColors.expense.withValues(alpha: 0.2),
+                      backgroundColor: isIncome
+                          ? AppColors.income.withValues(alpha: 0.2)
+                          : AppColors.expense.withValues(alpha: 0.2),
                       child: Icon(
                         isIncome ? Icons.arrow_upward : Icons.arrow_downward,
                         color: isIncome ? AppColors.income : AppColors.expense,
                       ),
                     ),
-                    title: Text(tx.category, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Text('${DateFormat.yMMMd().format(tx.date)}\n${tx.note}'),
+                    title: Text(
+                      tx.category,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      '${DateFormat.yMMMd().format(tx.date)}\n${tx.note}',
+                    ),
                     isThreeLine: tx.note.isNotEmpty,
                     trailing: Text(
                       '${isIncome ? '+' : '-'}${currencyFormat.format(tx.amount)}',

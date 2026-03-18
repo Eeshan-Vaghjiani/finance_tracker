@@ -23,7 +23,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         return '/'; // Splash
       }
 
-      final isAuthenticated = authState.value != null && authState.value!.isNotEmpty;
+      final isAuthenticated =
+          authState.value != null && authState.value!.isNotEmpty;
       final isGoingToLogin = state.matchedLocation == '/login';
       final isGoingToRegister = state.matchedLocation == '/register';
 
@@ -31,21 +32,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         return '/login';
       }
 
-      if (isAuthenticated && (isGoingToLogin || isGoingToRegister || state.matchedLocation == '/')) {
+      if (isAuthenticated &&
+          (isGoingToLogin ||
+              isGoingToRegister ||
+              state.matchedLocation == '/')) {
         return '/home';
       }
 
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const SplashScreen(),
-      ),
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginScreen(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
+      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
@@ -63,9 +61,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 );
               },
               destinations: const [
-                NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Home'),
-                NavigationDestination(icon: Icon(Icons.pie_chart_outline), selectedIcon: Icon(Icons.pie_chart), label: 'Analytics'),
-                NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Profile'),
+                NavigationDestination(
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.pie_chart_outline),
+                  selectedIcon: Icon(Icons.pie_chart),
+                  label: 'Analytics',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.person_outline),
+                  selectedIcon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
               ],
             ),
           );

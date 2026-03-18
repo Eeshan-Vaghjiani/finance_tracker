@@ -28,7 +28,9 @@ class HomeScreen extends ConsumerWidget {
           children: [
             Text(
               'Welcome Back,',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.grey),
             ),
             Text(
               user?.name ?? 'User',
@@ -43,10 +45,14 @@ class HomeScreen extends ConsumerWidget {
                 final photoUrl = FirebaseAuth.instance.currentUser?.photoURL;
                 return CircleAvatar(
                   radius: 16,
-                  backgroundImage: photoUrl != null ? NetworkImage(photoUrl) : null,
-                  child: photoUrl == null ? const Icon(Icons.account_circle, size: 32) : null,
+                  backgroundImage: photoUrl != null
+                      ? NetworkImage(photoUrl)
+                      : null,
+                  child: photoUrl == null
+                      ? const Icon(Icons.account_circle, size: 32)
+                      : null,
                 );
-              }
+              },
             ),
             onPressed: () => context.push('/profile'),
           ),
@@ -65,14 +71,22 @@ class HomeScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSummaryCard(context, totalBalance, totalIncome, totalExpense, currencyFormat),
+                _buildSummaryCard(
+                  context,
+                  totalBalance,
+                  totalIncome,
+                  totalExpense,
+                  currencyFormat,
+                ),
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Recent Transactions',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     TextButton(
                       onPressed: () => context.push('/transactions'),
@@ -91,7 +105,7 @@ class HomeScreen extends ConsumerWidget {
                         ),
                       );
                     }
-                    
+
                     final recentList = transactions.take(5).toList();
                     return ListView.builder(
                       shrinkWrap: true,
@@ -107,28 +121,48 @@ class HomeScreen extends ConsumerWidget {
                             alignment: Alignment.centerRight,
                             padding: const EdgeInsets.only(right: 20),
                             color: Colors.red,
-                            child: const Icon(Icons.delete, color: Colors.white),
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
                           ),
                           onDismissed: (_) {
-                            ref.read(transactionControllerProvider.notifier).deleteTransaction(tx.id);
+                            ref
+                                .read(transactionControllerProvider.notifier)
+                                .deleteTransaction(tx.id);
                           },
                           child: Card(
                             margin: const EdgeInsets.only(bottom: 8),
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: isIncome ? AppColors.income.withValues(alpha: 0.2) : AppColors.expense.withValues(alpha: 0.2),
+                                backgroundColor: isIncome
+                                    ? AppColors.income.withValues(alpha: 0.2)
+                                    : AppColors.expense.withValues(alpha: 0.2),
                                 child: Icon(
-                                  isIncome ? Icons.arrow_upward : Icons.arrow_downward,
-                                  color: isIncome ? AppColors.income : AppColors.expense,
+                                  isIncome
+                                      ? Icons.arrow_upward
+                                      : Icons.arrow_downward,
+                                  color: isIncome
+                                      ? AppColors.income
+                                      : AppColors.expense,
                                 ),
                               ),
-                              title: Text(tx.category, style: const TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Text(DateFormat.yMMMd().format(tx.date)),
+                              title: Text(
+                                tx.category,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text(
+                                DateFormat.yMMMd().format(tx.date),
+                              ),
                               trailing: Text(
                                 '${isIncome ? '+' : '-'}${currencyFormat.format(tx.amount)}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: isIncome ? AppColors.income : AppColors.expense,
+                                  color: isIncome
+                                      ? AppColors.income
+                                      : AppColors.expense,
                                   fontSize: 16,
                                 ),
                               ),
@@ -141,7 +175,8 @@ class HomeScreen extends ConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                   error: (err, stack) => Center(child: Text('Error: $err')),
                 ),
               ],
@@ -157,7 +192,12 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _buildSummaryCard(
-      BuildContext context, double balance, double income, double expense, NumberFormat format) {
+    BuildContext context,
+    double balance,
+    double income,
+    double expense,
+    NumberFormat format,
+  ) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -194,9 +234,23 @@ class HomeScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           Row(
             children: [
-              Expanded(child: _buildIncomeExpenseColumn('Income', format.format(income), Icons.arrow_upward, Colors.greenAccent)),
+              Expanded(
+                child: _buildIncomeExpenseColumn(
+                  'Income',
+                  format.format(income),
+                  Icons.arrow_upward,
+                  Colors.greenAccent,
+                ),
+              ),
               const SizedBox(width: 16),
-              Expanded(child: _buildIncomeExpenseColumn('Expense', format.format(expense), Icons.arrow_downward, Colors.redAccent)),
+              Expanded(
+                child: _buildIncomeExpenseColumn(
+                  'Expense',
+                  format.format(expense),
+                  Icons.arrow_downward,
+                  Colors.redAccent,
+                ),
+              ),
             ],
           ),
         ],
@@ -204,7 +258,12 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildIncomeExpenseColumn(String title, String amount, IconData icon, Color iconColor) {
+  Widget _buildIncomeExpenseColumn(
+    String title,
+    String amount,
+    IconData icon,
+    Color iconColor,
+  ) {
     return Row(
       children: [
         CircleAvatar(
@@ -217,13 +276,20 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+              Text(
+                title,
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
               FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.centerLeft,
                 child: Text(
                   amount,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ],

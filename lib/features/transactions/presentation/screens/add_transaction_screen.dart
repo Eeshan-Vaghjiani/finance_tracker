@@ -12,7 +12,8 @@ class AddTransactionScreen extends ConsumerStatefulWidget {
   const AddTransactionScreen({super.key});
 
   @override
-  ConsumerState<AddTransactionScreen> createState() => _AddTransactionScreenState();
+  ConsumerState<AddTransactionScreen> createState() =>
+      _AddTransactionScreenState();
 }
 
 class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
@@ -20,7 +21,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
   final _customCategoryController = TextEditingController();
-  
+
   TransactionType _selectedType = TransactionType.expense;
   DateTime _selectedDate = DateTime.now();
   String _selectedCategory = 'Food';
@@ -33,7 +34,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      if (_selectedCategory == 'Other' && _customCategoryController.text.trim().isEmpty) {
+      if (_selectedCategory == 'Other' &&
+          _customCategoryController.text.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Please enter a custom category name.')),
         );
@@ -43,8 +45,8 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       final user = ref.read(authStateProvider).value;
       if (user == null) return;
 
-      final finalCategory = _selectedCategory == 'Other' 
-          ? _customCategoryController.text.trim() 
+      final finalCategory = _selectedCategory == 'Other'
+          ? _customCategoryController.text.trim()
           : _selectedCategory;
 
       final transaction = TransactionEntity(
@@ -58,10 +60,13 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
         createdAt: DateTime.now(),
       );
 
-      ref.read(transactionControllerProvider.notifier).addTransaction(transaction).then((_) {
-        // ignore: use_build_context_synchronously
-        if (mounted) context.pop();
-      });
+      ref
+          .read(transactionControllerProvider.notifier)
+          .addTransaction(transaction)
+          .then((_) {
+            // ignore: use_build_context_synchronously
+            if (mounted) context.pop();
+          });
     }
   }
 
@@ -79,29 +84,28 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     final incomeCategories = ref.watch(incomeCategoriesProvider);
     final expenseCategories = ref.watch(expenseCategoriesProvider);
 
-    final currentCategories = _selectedType == TransactionType.income ? incomeCategories : expenseCategories;
-    
+    final currentCategories = _selectedType == TransactionType.income
+        ? incomeCategories
+        : expenseCategories;
+
     // Safety check: Ensure the selected category exists in the list currently being shown
     if (!currentCategories.contains(_selectedCategory)) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-            setState(() {
-               _selectedCategory = currentCategories.first;
-            });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _selectedCategory = currentCategories.first;
         });
+      });
     }
 
-    ref.listen<AsyncValue<void>>(
-      transactionControllerProvider,
-      (_, state) {
-        state.whenOrNull(
-          error: (error, _) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(error.toString())),
-            );
-          },
-        );
-      },
-    );
+    ref.listen<AsyncValue<void>>(transactionControllerProvider, (_, state) {
+      state.whenOrNull(
+        error: (error, _) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(error.toString())));
+        },
+      );
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add Transaction')),
@@ -133,14 +137,18 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: _selectedType == TransactionType.income ? AppColors.income : Colors.transparent,
+                              color: _selectedType == TransactionType.income
+                                  ? AppColors.income
+                                  : Colors.transparent,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               'Income',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: _selectedType == TransactionType.income ? Colors.white : Colors.black54,
+                                color: _selectedType == TransactionType.income
+                                    ? Colors.white
+                                    : Colors.black54,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -158,14 +166,18 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: _selectedType == TransactionType.expense ? AppColors.expense : Colors.transparent,
+                              color: _selectedType == TransactionType.expense
+                                  ? AppColors.expense
+                                  : Colors.transparent,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               'Expense',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: _selectedType == TransactionType.expense ? Colors.white : Colors.black54,
+                                color: _selectedType == TransactionType.expense
+                                    ? Colors.white
+                                    : Colors.black54,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -176,7 +188,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                
+
                 // Amount
                 TextFormField(
                   controller: _amountController,
@@ -184,19 +196,27 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                     labelText: 'Amount',
                     prefixText: '\$ ',
                   ),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) return 'Enter amount';
-                    if (double.tryParse(value) == null) return 'Enter a valid number';
+                    if (double.tryParse(value) == null)
+                      return 'Enter a valid number';
                     return null;
                   },
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Category
                 DropdownButtonFormField<String>(
-                  value: currentCategories.contains(_selectedCategory) ? _selectedCategory : currentCategories.first,
+                  initialValue: currentCategories.contains(_selectedCategory)
+                      ? _selectedCategory
+                      : currentCategories.first,
                   decoration: const InputDecoration(labelText: 'Category'),
                   items: currentCategories
                       .map((c) => DropdownMenuItem(value: c, child: Text(c)))
@@ -206,7 +226,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                       setState(() {
                         _selectedCategory = val;
                         if (val != 'Other') {
-                           _customCategoryController.clear();
+                          _customCategoryController.clear();
                         }
                       });
                     }
@@ -244,11 +264,13 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Note
                 TextFormField(
                   controller: _noteController,
-                  decoration: const InputDecoration(labelText: 'Note (Optional)'),
+                  decoration: const InputDecoration(
+                    labelText: 'Note (Optional)',
+                  ),
                   maxLines: 2,
                 ),
                 const SizedBox(height: 48),

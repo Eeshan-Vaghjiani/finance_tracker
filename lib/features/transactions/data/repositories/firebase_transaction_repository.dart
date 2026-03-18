@@ -7,7 +7,7 @@ class FirebaseTransactionRepository implements TransactionRepository {
   final FirebaseFirestore _firestore;
 
   FirebaseTransactionRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   @override
   Stream<List<TransactionEntity>> getUserTransactions(String userId) {
@@ -17,16 +17,18 @@ class FirebaseTransactionRepository implements TransactionRepository {
         .orderBy('date', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => TransactionModel.fromFirestore(doc))
-          .toList();
-    });
+          return snapshot.docs
+              .map((doc) => TransactionModel.fromFirestore(doc))
+              .toList();
+        });
   }
 
   @override
   Future<void> addTransaction(TransactionEntity transaction) async {
     final docRef = _firestore.collection('transactions').doc();
-    final model = TransactionModel.fromEntity(transaction.copyWith(id: docRef.id));
+    final model = TransactionModel.fromEntity(
+      transaction.copyWith(id: docRef.id),
+    );
     await docRef.set(model.toMap());
   }
 

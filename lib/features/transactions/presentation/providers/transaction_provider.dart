@@ -58,15 +58,18 @@ class TransactionController extends AsyncNotifier<void> {
   }
 }
 
-final transactionControllerProvider = AsyncNotifierProvider<TransactionController, void>(() {
-  return TransactionController();
-});
+final transactionControllerProvider =
+    AsyncNotifierProvider<TransactionController, void>(() {
+      return TransactionController();
+    });
 
 // Additional computed providers for Dashboard metrics
 final totalBalanceProvider = Provider<double>((ref) {
   final transactions = ref.watch(userTransactionsProvider).value ?? [];
   return transactions.fold(0.0, (sum, tx) {
-    return tx.type == TransactionType.income ? sum + tx.amount : sum - tx.amount;
+    return tx.type == TransactionType.income
+        ? sum + tx.amount
+        : sum - tx.amount;
   });
 });
 
@@ -90,19 +93,31 @@ final incomeCategoriesProvider = Provider<List<String>>((ref) {
   final customCategories = transactions
       .where((tx) => tx.type == TransactionType.income)
       .map((tx) => tx.category)
-      .where((category) => !defaultCategories.contains(category) && category != 'Other')
+      .where(
+        (category) =>
+            !defaultCategories.contains(category) && category != 'Other',
+      )
       .toSet()
       .toList();
   return [...defaultCategories, ...customCategories, 'Other'];
 });
 
 final expenseCategoriesProvider = Provider<List<String>>((ref) {
-  final defaultCategories = ['Food', 'Transport', 'Utilities', 'Shopping', 'Entertainment'];
+  final defaultCategories = [
+    'Food',
+    'Transport',
+    'Utilities',
+    'Shopping',
+    'Entertainment',
+  ];
   final transactions = ref.watch(userTransactionsProvider).value ?? [];
   final customCategories = transactions
       .where((tx) => tx.type == TransactionType.expense)
       .map((tx) => tx.category)
-      .where((category) => !defaultCategories.contains(category) && category != 'Other')
+      .where(
+        (category) =>
+            !defaultCategories.contains(category) && category != 'Other',
+      )
       .toSet()
       .toList();
   return [...defaultCategories, ...customCategories, 'Other'];

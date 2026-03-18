@@ -25,10 +25,10 @@ class SyncMpesaNotifier extends AsyncNotifier<int> {
 
       final smsService = ref.read(smsServiceProvider);
       final messages = await smsService.getMPesaMessages();
-      
+
       int addedCount = 0;
       final txController = ref.read(transactionControllerProvider.notifier);
-      
+
       for (var msg in messages.take(10)) {
         if (msg.body != null) {
           final tx = MPesaParser.parseMessage(msg.body!, user.id);

@@ -6,10 +6,12 @@ import '../../../transactions/domain/entities/transaction_entity.dart';
 
 final categoryExpensesProvider = Provider<List<CategoryExpense>>((ref) {
   final transactions = ref.watch(userTransactionsProvider).value ?? [];
-  
+
   final Map<String, double> categoryMap = {};
 
-  final expenses = transactions.where((tx) => tx.type == TransactionType.expense);
+  final expenses = transactions.where(
+    (tx) => tx.type == TransactionType.expense,
+  );
 
   for (final tx in expenses) {
     if (categoryMap.containsKey(tx.category)) {
@@ -39,18 +41,28 @@ final monthlyAnalyticsProvider = Provider<List<MonthlyAnalytics>>((ref) {
     if (!map.containsKey(key)) {
       map[key] = MonthlyAnalytics(monthYear: key, income: 0, expense: 0);
     }
-    
+
     final current = map[key]!;
     if (tx.type == TransactionType.income) {
-       map[key] = MonthlyAnalytics(monthYear: key, income: current.income + tx.amount, expense: current.expense);
+      map[key] = MonthlyAnalytics(
+        monthYear: key,
+        income: current.income + tx.amount,
+        expense: current.expense,
+      );
     } else {
-       map[key] = MonthlyAnalytics(monthYear: key, income: current.income, expense: current.expense + tx.amount);
+      map[key] = MonthlyAnalytics(
+        monthYear: key,
+        income: current.income,
+        expense: current.expense + tx.amount,
+      );
     }
   }
 
   final sortedKeys = map.keys.toList()..sort();
   // Take last 6 months for example
-  final recentKeys = sortedKeys.length > 6 ? sortedKeys.sublist(sortedKeys.length - 6) : sortedKeys;
-  
+  final recentKeys = sortedKeys.length > 6
+      ? sortedKeys.sublist(sortedKeys.length - 6)
+      : sortedKeys;
+
   return recentKeys.map((k) => map[k]!).toList();
 });

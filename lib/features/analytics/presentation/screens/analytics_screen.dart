@@ -18,20 +18,20 @@ class AnalyticsScreen extends ConsumerWidget {
     final totalExpense = expenses.fold(0.0, (sum, item) => sum + item.amount);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Analytics'),
-      ),
+      appBar: AppBar(title: const Text('Analytics')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildMonthlyBarChart(monthlyData, context),
-            
+
             if (expenses.isNotEmpty) ...[
               Text(
                 'Expenses by Category',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 32),
               SizedBox(
@@ -45,7 +45,10 @@ class AnalyticsScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              const Text('Details', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              const Text(
+                'Details',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
               const SizedBox(height: 16),
               ListView.builder(
                 shrinkWrap: true,
@@ -68,8 +71,17 @@ class AnalyticsScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(currencyFormat.format(item.amount), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        Text('${percentage.toStringAsFixed(1)}%', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                        Text(
+                          currencyFormat.format(item.amount),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${percentage.toStringAsFixed(1)}%',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
                       ],
                     ),
                   );
@@ -89,7 +101,10 @@ class AnalyticsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildMonthlyBarChart(List<MonthlyAnalytics> monthlyData, BuildContext context) {
+  Widget _buildMonthlyBarChart(
+    List<MonthlyAnalytics> monthlyData,
+    BuildContext context,
+  ) {
     if (monthlyData.isEmpty) return const SizedBox.shrink();
 
     double maxY = 0;
@@ -105,7 +120,9 @@ class AnalyticsScreen extends ConsumerWidget {
       children: [
         Text(
           'Income vs Expenses',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 24),
         SizedBox(
@@ -138,22 +155,37 @@ class AnalyticsScreen extends ConsumerWidget {
                     showTitles: true,
                     getTitlesWidget: (value, meta) {
                       final index = value.toInt();
-                      if (index < 0 || index >= monthlyData.length) return const SizedBox.shrink();
+                      if (index < 0 || index >= monthlyData.length)
+                        return const SizedBox.shrink();
                       final parts = monthlyData[index].monthYear.split('-');
                       if (parts.length != 2) return const SizedBox.shrink();
                       final monthInt = int.tryParse(parts[1]) ?? 1;
-                      final monthStr = DateFormat('MMM').format(DateTime(2000, monthInt));
+                      final monthStr = DateFormat(
+                        'MMM',
+                      ).format(DateTime(2000, monthInt));
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(monthStr, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                        child: Text(
+                          monthStr,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
                       );
                     },
                     reservedSize: 30,
                   ),
                 ),
-                leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                leftTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
               ),
               gridData: FlGridData(
                 show: true,
@@ -175,13 +207,17 @@ class AnalyticsScreen extends ConsumerWidget {
                       toY: data.income,
                       color: AppColors.income,
                       width: 12,
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(4),
+                      ),
                     ),
                     BarChartRodData(
                       toY: data.expense,
                       color: AppColors.expense,
                       width: 12,
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(4),
+                      ),
                     ),
                   ],
                   barsSpace: 4,
@@ -207,18 +243,31 @@ class AnalyticsScreen extends ConsumerWidget {
   Widget _buildLegendItem(String title, Color color) {
     return Row(
       children: [
-        Container(width: 12, height: 12, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+        Container(
+          width: 12,
+          height: 12,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
         const SizedBox(width: 8),
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+        Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+        ),
       ],
     );
   }
 
-  List<PieChartSectionData> _generateChartSections(List<dynamic> expenses, double total) {
+  List<PieChartSectionData> _generateChartSections(
+    List<dynamic> expenses,
+    double total,
+  ) {
     return List.generate(expenses.length, (i) {
       final item = expenses[i];
       final percentage = (item.amount / total) * 100;
-      
+
       final isSmall = percentage < 5;
 
       return PieChartSectionData(
