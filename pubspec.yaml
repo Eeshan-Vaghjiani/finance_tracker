@@ -40,11 +40,11 @@ flutter:
     - assets/wallet_logo.png
 
 flutter_native_splash:
-  color: "#0B3B60"
+  color: "#022440"
   image: "assets/wallet_logo.png"
   android_12:
     image: "assets/wallet_logo.png"
-    icon_background_color: "#0B3B60"
+    icon_background_color: "#022440"
   android: true
   ios: true
 
@@ -52,5 +52,5 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/wallet_logo.png"
-  adaptive_icon_background: "#0B3B60"
+  adaptive_icon_background: "#022440"
   adaptive_icon_foreground: "assets/wallet_logo.png"
