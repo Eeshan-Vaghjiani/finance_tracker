@@ -15,10 +15,11 @@ class GroupService {
     return _firestore
         .collection('groups')
         .where('members', arrayContains: userEmail)
-        .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => Group.fromMap(doc.data(), doc.id)).toList();
+      final groups = snapshot.docs.map((doc) => Group.fromMap(doc.data(), doc.id)).toList();
+      groups.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return groups;
     });
   }
 
