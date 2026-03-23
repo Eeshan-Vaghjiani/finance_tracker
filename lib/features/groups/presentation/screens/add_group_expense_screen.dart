@@ -162,19 +162,24 @@ class _AddGroupExpenseScreenState extends ConsumerState<AddGroupExpenseScreen> {
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   value: categories.contains(_selectedCategory) ? _selectedCategory : null,
+                  isExpanded: true,
                   decoration: const InputDecoration(
                     labelText: 'Category',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.category),
                   ),
                   items: categories.map((cat) {
-                    return DropdownMenuItem(value: cat, child: Text(cat));
+                    return DropdownMenuItem(
+                      value: cat,
+                      child: Text(cat, overflow: TextOverflow.ellipsis),
+                    );
                   }).toList(),
                   onChanged: (val) => setState(() => _selectedCategory = val),
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   value: _selectedPayer,
+                  isExpanded: true,
                   decoration: const InputDecoration(
                     labelText: 'Paid By',
                     border: OutlineInputBorder(),
@@ -183,7 +188,10 @@ class _AddGroupExpenseScreenState extends ConsumerState<AddGroupExpenseScreen> {
                   items: group.members.map((member) {
                     return DropdownMenuItem(
                       value: member,
-                      child: Text(member == currentUser ? 'You ($member)' : member),
+                      child: Text(
+                        member == currentUser ? 'You ($member)' : member,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     );
                   }).toList(),
                   onChanged: (val) => setState(() => _selectedPayer = val),
