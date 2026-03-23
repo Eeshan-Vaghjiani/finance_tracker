@@ -3,15 +3,16 @@ import '../../../../core/services/sms_service.dart';
 import '../../../../core/utils/mpesa_parser.dart';
 import '../../../transactions/presentation/providers/transaction_provider.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../transactions/domain/entities/transaction_entity.dart';
 
 final smsServiceProvider = Provider<SmsService>((ref) {
   return SmsService();
 });
 
-class SyncMpesaNotifier extends AsyncNotifier<int> {
+class SyncMpesaNotifier extends AsyncNotifier<List<TransactionEntity>> {
   @override
-  Future<int> build() async {
-    return 0;
+  Future<List<TransactionEntity>> build() async {
+    return [];
   }
 
   Future<void> syncMessages() async {
@@ -26,7 +27,7 @@ class SyncMpesaNotifier extends AsyncNotifier<int> {
       final smsService = ref.read(smsServiceProvider);
       final messages = await smsService.getMPesaMessages();
 
-      int addedCount = 0;
+      List<TransactionEntity> addedTransactions = [];
       final txController = ref.read(transactionControllerProvider.notifier);
 
       for (var msg in messages.take(10)) {
@@ -34,18 +35,18 @@ class SyncMpesaNotifier extends AsyncNotifier<int> {
           final tx = MPesaParser.parseMessage(msg.body!, user.id);
           if (tx != null) {
             await txController.addTransaction(tx);
-            addedCount++;
+            addedTransactions.add(tx);
           }
         }
       }
 
-      state = AsyncValue.data(addedCount);
+      state = AsyncValue.data(addedTransactions);
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }
   }
 }
 
-final syncMpesaProvider = AsyncNotifierProvider<SyncMpesaNotifier, int>(() {
+final syncMpesaProvider = AsyncNotifierProvider<SyncMpesaNotifier, List<TransactionEntity>>(() {
   return SyncMpesaNotifier();
 });

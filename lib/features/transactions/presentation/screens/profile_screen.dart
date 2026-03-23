@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import 'package:finance_tracker/features/sms_parsing/presentation/providers/sms_provider.dart';
+import 'package:finance_tracker/features/transactions/domain/entities/transaction_entity.dart';
+import 'package:finance_tracker/features/groups/providers/group_providers.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -105,12 +107,28 @@ class ProfileScreen extends ConsumerWidget {
                 builder: (context, ref, child) {
                   final syncState = ref.watch(syncMpesaProvider);
 
-                  ref.listen<AsyncValue<int>>(syncMpesaProvider, (_, state) {
+                  ref.listen<AsyncValue<List<TransactionEntity>>>(syncMpesaProvider, (_, state) {
                     state.whenOrNull(
-                      data: (count) {
+                      data: (transactions) {
+                        final count = transactions.length;
+                        if (count == 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('No new transactions')),
+                          );
+                          return;
+                        }
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Synced $count new transactions'),
+                            content: Text('Synced $count new M-Pesa transactions'),
+                            duration: const Duration(seconds: 5),
+                            action: SnackBarAction(
+                              label: 'Add to Group',
+                              onPressed: () {
+                                final latestTx = transactions.first;
+                                _showGroupSelectionSheet(context, ref, latestTx);
+                              },
+                            ),
                           ),
                         );
                       },
@@ -159,6 +177,61 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showGroupSelectionSheet(BuildContext context, WidgetRef ref, TransactionEntity tx) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return Consumer(
+          builder: (context, ref, child) {
+            final groupsAsync = ref.watch(userGroupsProvider);
+            return groupsAsync.when(
+              data: (groups) {
+                if (groups.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: Text('You have no groups yet.'),
+                  );
+                }
+
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text('Select Group', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      ),
+                      ...groups.map((group) {
+                        return ListTile(
+                          title: Text(group.name),
+                          onTap: () {
+                            Navigator.pop(ctx);
+                            context.push(
+                              Uri(
+                                path: '/groups/${group.id}/add-expense',
+                                queryParameters: {
+                                  'title': tx.category,
+                                  'amount': tx.amount.toString(),
+                                  'category': tx.category,
+                                },
+                              ).toString(),
+                            );
+                          },
+                        );
+                      }),
+                    ],
+                  ),
+                );
+              },
+              loading: () => const Center(child: Padding(padding: EdgeInsets.all(32.0), child: CircularProgressIndicator())),
+              error: (err, _) => Center(child: Padding(padding: EdgeInsets.all(32.0), child: Text('Error: $err'))),
+            );
+          },
+        );
+      },
     );
   }
 }

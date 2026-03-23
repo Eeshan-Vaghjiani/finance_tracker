@@ -11,6 +11,10 @@ import '../../features/transactions/presentation/screens/add_transaction_screen.
 import '../../features/transactions/presentation/screens/transaction_list_screen.dart';
 import '../../features/transactions/presentation/screens/settings_screen.dart';
 import '../../features/analytics/presentation/screens/analytics_screen.dart';
+import '../../features/groups/presentation/screens/groups_list_screen.dart';
+import '../../features/groups/presentation/screens/create_group_screen.dart';
+import '../../features/groups/presentation/screens/group_details_screen.dart';
+import '../../features/groups/presentation/screens/add_group_expense_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
@@ -76,6 +80,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   selectedIcon: Icon(Icons.person),
                   label: 'Profile',
                 ),
+                NavigationDestination(
+                  icon: Icon(Icons.group_outlined),
+                  selectedIcon: Icon(Icons.group),
+                  label: 'Groups',
+                ),
               ],
             ),
           );
@@ -105,6 +114,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/groups',
+                builder: (context, state) => const GroupsListScreen(),
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(
@@ -118,6 +135,32 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/groups/create',
+        builder: (context, state) => const CreateGroupScreen(),
+      ),
+      GoRoute(
+        path: '/groups/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return GroupDetailsScreen(groupId: id);
+        },
+      ),
+      GoRoute(
+        path: '/groups/:id/add-expense',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          final title = state.uri.queryParameters['title'];
+          final amount = state.uri.queryParameters['amount'];
+          final category = state.uri.queryParameters['category'];
+          return AddGroupExpenseScreen(
+            groupId: id,
+            initialTitle: title,
+            initialAmount: amount,
+            initialCategory: category,
+          );
+        },
       ),
     ],
   );
